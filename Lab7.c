@@ -18,11 +18,11 @@ void emptyBoard(char board[21][21], int n)
 void printBoard(char board[21][21], int n)
 {
     for(int i= 0; i<n; i++)
+    {
         for(int j=0; j<n;j++)
-        {
-            printf("%c", board[i][j]);
-            if(j == n-1) printf("\n");
-        }
+        printf("%c", board[i][j]);
+        printf("\n");
+    }    
 }
 
 void blockBoard(char board[21][21], int n)
@@ -34,7 +34,7 @@ void blockBoard(char board[21][21], int n)
         printf("Enter position (ROW COL) of blocked square;"
         " (-1 -1) to finish: ");
         scanf("%d%d", &row, &col);
-        inRange = (row>=0)||(col>=0);
+        inRange = (row>=0)&&(col>=0);
         open = board[row][col] == 'U';
         if (!open & inRange) printf("Position already occupied, try again\n");
         else if (open & inRange )
@@ -49,7 +49,7 @@ void playBoard(char board[21][21], int n)
 {
     int turn = 1;
     int row, col;
-    bool inRange = true, open, black =true;
+    bool inRange = true, open, black;
     while(inRange)
     {
         black = turn % 2;
@@ -57,7 +57,7 @@ void playBoard(char board[21][21], int n)
         else printf("Enter White");
         printf(" Move (ROW COL); (-1 -1) to finish: ");
         scanf("%d%d", &row, &col);
-        inRange = (row>=0)||(col>=0);
+        inRange = (row>=0)&&(col>=0);
         open = board[row][col] == 'U';
         if (!open & inRange)
             printf("That square is already occupied or blocked\n");
@@ -70,7 +70,26 @@ void playBoard(char board[21][21], int n)
         }
     }
 }
-void findXLongest (char board[21][21], int n, int row, int col)
+
+void checkWinner(char board[21][21], int n)
+{
+    int countSix = 0;
+    char winner = 'U';
+    for(int i =0; i<n; i++)
+        for(int j =0; j<n; j++)
+        {
+            countSix = findLongest(board[21][21], n, i, j)
+            if (countSix >= 6)
+            winner = board[i][j];
+        }
+    if (winner == 'U')
+    printf("No winner so far");
+    else if (winner == 'B')
+    printf("Black wins")
+    else if(winner == 'W')
+    printf("White wins")
+}
+void askLongest (char board[21][21], int n, int row, int col)
 {
     bool inRange = (row>=0)||(col>=0);
     while (inRange)
@@ -147,10 +166,7 @@ int main()
     printBoard(board, size);
     blockBoard(board, size);
     playBoard(board, size);
-    while(1)
-    {
-        
-    }
+    checkWinner(board, size);
     printf("\n%d", findLongest(board, size, 0, 0));
     
     
